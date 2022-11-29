@@ -32,7 +32,7 @@ function secretSantaHat(names: string[]): {[key: string]: string} {
         }
 
         let receiver = receivers[j];
-        if (receiver == giver) {
+        if (receiver === giver) {
             throw new Error('domain wipeout');
         }
         // remove the element from receivers
@@ -76,8 +76,8 @@ export function NewCampaign() {
     const [isInit, setInit] = useState(false);
     const [hasArrangement, setHasArrangement] = useState(false);
     const [arrangement, setArrangement] = useState({} as {[key: string]: string});
-    const [email, setEmail] = useState('');
-    const [includeEmail, setIncludeEmail] = useState(false);
+    // const [email, setEmail] = useState('');
+    // const [includeEmail, setIncludeEmail] = useState(false);
     const [hasEncArrangement, setHasEncArrangement] = useState(false);
     const [encArrangement, setEncArrangement] = useState({} as {[key: string]: IEncOut});
 
@@ -86,10 +86,10 @@ export function NewCampaign() {
         setName(val);
     };
 
-    const handleEmailChange = (e: React.SyntheticEvent) => {
-        const val = (e.target as any).value;
-        setEmail(val);
-    };
+    // const handleEmailChange = (e: React.SyntheticEvent) => {
+    //     const val = (e.target as any).value;
+    //     setEmail(val);
+    // };
 
     const handleAddName = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -136,14 +136,14 @@ export function NewCampaign() {
         setHasEncArrangement(true);
     };
 
-    const handleChangeSettings = (e: React.SyntheticEvent) => {
-        const name = (e.target as any).name;
-        if (name === 'include_email') {
-            const val = (e.target as any).checked;
-            console.log(val);
-            setIncludeEmail(val);
-        }
-    };
+    // const handleChangeSettings = (e: React.SyntheticEvent) => {
+    //     const name = (e.target as any).name;
+    //     if (name === 'include_email') {
+    //         const val = (e.target as any).checked;
+    //         console.log(val);
+    //         setIncludeEmail(val);
+    //     }
+    // };
 
     /**
      * Check for saved names in localStorage
@@ -205,7 +205,7 @@ export function NewCampaign() {
                         value={name}
                         onChange={handleNameChange} />
                 </div>
-                { includeEmail ?
+                {/* { includeEmail ?
                     <div className="mt-2">
                         <label htmlFor="email">Email</label>
                         <input type="email" name='email' className='form-control'
@@ -213,7 +213,7 @@ export function NewCampaign() {
                             value={email}
                             onChange={handleEmailChange} />
                     </div> : null
-                }
+                } */}
                 <div className="mt-2">
                     <button type="submit" className="form-control btn btn-success">Add</button>
                 </div>
