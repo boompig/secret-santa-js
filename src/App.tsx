@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
+import { NewCampaign } from './NewCampaign';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -93,11 +93,7 @@ function App() {
     if (name && key) {
         return <DecryptionForm ciphertext={name} decryptionKey={key} />;
     }
-    return (
-        <div className="App">
-            Under Construction
-        </div>
-    );
+    return <NewCampaign />;
 }
 
 export default App;
