@@ -1,74 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import * as _ from 'underscore';
-import { encryptText, IEncOut, base64ToBuf, bufToBase64 } from './utils';
+import { encryptText, IEncOut, base64ToBuf, bufToBase64 } from './crypto_utils';
+import { randomSecretSantaSearch } from './utils';
 
-const MAX_NUM_FAILURES = 3;
-
-
-function checkArrangement(arrangement: {[key: string]: string}): boolean {
-    for (let [giver, receiver] of Object.entries(arrangement)) {
-        if (giver === receiver) {
-            return false;
-        }
-    }
-    return true;
-}
-
-function secretSantaHat(names: string[]): {[key: string]: string} {
-    const arrangement = {} as {[key: string]: string};
-    const receivers = _.shuffle(names);
-
-    for (let i = 0; i < names.length; i++) {
-        const giver = names[i];
-        let j = 0;
-
-        if (receivers.length > 1) {
-            for (j = 0; j < receivers.length; j++) {
-                let receiver = receivers[j];
-                if (giver !== receiver) {
-                    break;
-                }
-            }
-        }
-
-        let receiver = receivers[j];
-        if (receiver === giver) {
-            throw new Error('domain wipeout');
-        }
-        // remove the element from receivers
-        receivers.splice(j, 1);
-        arrangement[giver] = receiver;
-    }
-
-    return arrangement;
-}
-
-/**
- * Use a simple search technique based on the idea of drawing from a hat
- */
-function createArrangement(names: string[]): {[key: string]: string} {
-    let arrangement = {} as {[key: string]: string};
-    let isOk = false;
-    let numFailures = 0;
-
-    while (!isOk && numFailures < MAX_NUM_FAILURES) {
-        try {
-            arrangement = secretSantaHat(names);
-            isOk = checkArrangement(arrangement);
-        } catch (err) {
-            isOk = false;
-        }
-        if (!isOk) {
-            numFailures++;
-        }
-    }
-
-    if (numFailures >= MAX_NUM_FAILURES) {
-        throw new Error('exceeded max # failures');
-    }
-
-    return arrangement;
-}
 
 export function NewCampaign() {
     const [name, setName] = useState('');
@@ -113,13 +46,13 @@ export function NewCampaign() {
 
     const handleCreateArrangement = () => {
         setHasArrangement(true);
-        const myArrangement = createArrangement(names);
+        const myArrangement = randomSecretSantaSearch(names);
         setArrangement(myArrangement);
         console.log('arrangement created');
     };
 
     const handleCreateEncArrangement = async () => {
-        const myArrangement = createArrangement(names);
+        const myArrangement = randomSecretSantaSearch(names);
         const givers = Object.keys(myArrangement);
         const myEncArrangement = {} as {[key: string]: IEncOut};
         for (let i = 0; i < givers.length; i++) {
@@ -170,7 +103,7 @@ export function NewCampaign() {
         </div>
     });
     const arrElems = Object.entries(arrangement).map(([giver, receiver]) => {
-        return <div>{ giver } &#8594; { receiver }</div>
+        return <div key={giver}>{ giver } &#8594; { receiver }</div>
     });
 
     const encArrElems = Object.entries(encArrangement).map(([giver, encReceiver]) => {
