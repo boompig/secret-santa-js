@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import LandingPage from './LandingPage';
 import { GroupPage } from './GroupPage';
+import ExistingGroupPage from './ExistingGroupPage';
 
 interface IFormProps {
     ciphertext: string;
@@ -201,6 +202,9 @@ export const App = () => {
             break;
         case 'new-group':
             viewElem= <GroupPage />;
+            break;
+        case 'existing-group':
+            viewElem = <ExistingGroupPage />;
             break;
         default:
             viewElem = (<div className="container">

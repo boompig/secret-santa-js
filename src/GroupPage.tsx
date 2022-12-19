@@ -169,8 +169,16 @@ export function CreateGroupForm (props: ICreateGroupFormProps) {
     </section>;
 }
 
-export const GroupPage = () => {
-    const [groupName, setGroupName] = useState(null as string | null);
+interface IGroupPageProps {
+    /**
+     * Optionally provide the name of the group
+     */
+    groupName?: string;
+}
+
+export const GroupPage = (props: IGroupPageProps) => {
+    const defaultGroupName = (props.groupName ? props.groupName : null);
+    const [groupName, setGroupName] = useState(defaultGroupName as string | null);
     const [people, setPeople] = useState([] as IPerson[]);
     /**
      * True iff we have tried loading people from localStorage (regardless of whether we succeeded)

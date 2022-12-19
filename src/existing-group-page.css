@@ -1,0 +1,8 @@
+.existing-group-page form {
+    max-width: 600px !important;
+    margin: 0 auto;
+}
+
+.existing-group-page form label {
+    font-weight: bold;
+}
