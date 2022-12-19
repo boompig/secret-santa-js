@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { encryptText, IEncOut, base64ToBuf, bufToBase64 } from './crypto_utils';
 import { randomSecretSantaSearch } from './utils';
+import './new-public-drawing.css';
 
 
+/**
+ * This is our most basic implementation of Secret Santa
+ * We can add any number of people
+ * Then at the press of a button, we can create an assignment that works.
+ */
 export function NewCampaign() {
     const [name, setName] = useState('');
     const [names, setNames] = useState([] as string[]);
@@ -13,6 +19,7 @@ export function NewCampaign() {
     // const [includeEmail, setIncludeEmail] = useState(false);
     const [hasEncArrangement, setHasEncArrangement] = useState(false);
     const [encArrangement, setEncArrangement] = useState({} as {[key: string]: IEncOut});
+    const [errorMsg, setErrorMsg] = useState(null as null | string);
 
     const handleNameChange = (e: React.SyntheticEvent) => {
         const val = (e.target as any).value;
@@ -26,6 +33,12 @@ export function NewCampaign() {
 
     const handleAddName = (e: React.SyntheticEvent) => {
         e.preventDefault();
+        const i = names.indexOf(name);
+        if (i !== -1) {
+            setErrorMsg(`${name} has already been added`);
+            return;
+        }
+
         const newNames = [...names, name];
         setNames(newNames);
         setName('');
@@ -98,8 +111,23 @@ export function NewCampaign() {
     const namesElems = names.map((name: string, i: number) => {
         return <div className="name flex" key={i}>
             <span>{ name }</span>
-            <button type='button' className='btn btn-danger delete-btn btn-sm'
-                onClick={() => handleDeleteName(i)}>&#215;</button>
+
+            {/* larger screens */}
+            <div className="d-none d-md-block">
+                <button type='button' className='btn btn-outline-danger delete-btn'
+                    onClick={() => handleDeleteName(i)}>
+                        <span>remove</span>
+                </button>
+            </div>
+
+            <div className="d-sm-block d-md-none d-lg-none d-xl-none">
+
+                <button type='button' className='btn btn-danger delete-btn btn-sm'
+                    onClick={() => handleDeleteName(i)}>
+                        <span>&#215;</span>
+                </button>
+            </div>
+
         </div>
     });
     const arrElems = Object.entries(arrangement).map(([giver, receiver]) => {
@@ -126,17 +154,24 @@ export function NewCampaign() {
         </div>);
     });
 
-    return (<div className='container'>
-        <h1>Create a New Secret Santa Campaign</h1>
+    return (<div className='container new-campaign-page'>
+        <h1>Create a new Secret Santa drawing</h1>
+
+        <p>Add names using the form below, then press the button to create Secret Santa assignments.</p>
 
         <section>
             <form onSubmit={handleAddName}>
+                { errorMsg ?
+                    <div className="alert alert-danger">{ errorMsg }</div>:
+                    null }
+
                 <div>
                     <label htmlFor='name'>Name</label>
                     <input type="text" name="name" className="form-control"
                         placeholder='name'
                         value={name}
-                        onChange={handleNameChange} />
+                        onChange={handleNameChange}
+                        autoComplete='off' />
                 </div>
                 {/* { includeEmail ?
                     <div className="mt-2">
@@ -148,7 +183,7 @@ export function NewCampaign() {
                     </div> : null
                 } */}
                 <div className="mt-2">
-                    <button type="submit" className="form-control btn btn-success">Add</button>
+                    <button type="submit" className="form-control btn btn-success">Add Name</button>
                 </div>
             </form>
         </section>
@@ -158,17 +193,18 @@ export function NewCampaign() {
 
             { names.length ?
                 namesElems :
-                <p>no names yet</p> }
+                <div className='alert alert-info'>no names yet</div> }
 
             <div className='mt-2 flex btn-container'>
                 <button type='button' className='btn btn-success'
-                    onClick={handleCreateArrangement}>Create Random Drawing</button>
-                <button type='button' className='btn btn-success'
-                    onClick={handleCreateEncArrangement}>Create Random Encrypted Drawing</button>
+                    onClick={handleCreateArrangement}
+                    disabled={names.length === 0}>Create Random Drawing</button>
+                {/* <button type='button' className='btn btn-success'
+                    onClick={handleCreateEncArrangement}>Create Random Encrypted Drawing</button> */}
             </div>
         </section>
 
-        { hasArrangement ?
+        { hasArrangement && names.length > 0 ?
             <section className='mt-4'>
                 <h2>Secret Santa Assignment</h2>
                 { arrElems }

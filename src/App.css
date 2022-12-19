@@ -2,16 +2,3 @@
   max-width: 600px;
   margin: 0 auto;
 }
-
-#names-section .name {
-  display: flex;
-  justify-content: space-between;
-  max-width: 400px;
-  padding-top: .25rem;
-}
-
-.btn-container {
-  display: flex;
-  justify-content: space-between;
-  max-width: 400;
-}

@@ -1,0 +1,12 @@
+.group-page p.instructions {
+    font-size: 1.2rem;
+}
+
+.group-page form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.group-page form label {
+    font-weight: bold;
+}

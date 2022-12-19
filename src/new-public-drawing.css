@@ -1,0 +1,20 @@
+.new-campaign-page {
+    max-width: 760px !important;
+}
+
+.new-campaign-page label {
+    font-weight: bold;
+}
+
+.new-campaign-page #names-section .name {
+  display: flex;
+  justify-content: space-between;
+  max-width: 400px;
+  padding-top: .25rem;
+}
+
+.new-campaign-page .btn-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 400;
+}

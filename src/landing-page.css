@@ -1,0 +1,16 @@
+.landing-page p {
+    font-size: 1.2rem;
+}
+
+.landing-page .btn-container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.landing-page .col-3-section {
+    margin-top: 2rem;
+}
+
+.landing-page .col-3-section p {
+    font-size: 1.1rem;
+}
